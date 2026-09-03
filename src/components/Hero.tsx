@@ -6,7 +6,8 @@ import {
   saveImageSlot,
   removeImageSlot,
   subscribeToImageUpdates,
-  processAndSaveFile
+  processAndSaveFile,
+  normalizeAssetUrl
 } from '../utils/imageStore';
 
 export const Hero: React.FC = () => {
@@ -92,7 +93,7 @@ export const Hero: React.FC = () => {
     }
   };
 
-  const heroImageSrc = customHeroImg || '/images/milan-summit.png';
+  const heroImageSrc = customHeroImg || normalizeAssetUrl('/images/milan-summit.png');
 
   return (
     <section id="home" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
@@ -115,40 +116,40 @@ export const Hero: React.FC = () => {
 
             {/* Headline */}
             <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] font-sans">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] font-sans">
                 Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-teal-200 to-sky-300">Milan Rajawat</span>
               </h1>
-              <h2 className="text-xl sm:text-2xl text-slate-200 font-semibold leading-snug">
+              <h2 className="text-lg sm:text-xl md:text-2xl text-slate-200 font-semibold leading-snug">
                 Mechanical / Product Design Engineer turning ideas into real, manufactured products.
               </h2>
             </div>
 
             {/* Short intro line */}
-            <p className="text-base sm:text-lg text-slate-400 max-w-2xl leading-relaxed font-sans">
+            <p className="text-sm sm:text-base md:text-lg text-slate-400 max-w-2xl leading-relaxed font-sans">
               I specialize in product design, 3D modeling, prototyping, and taking products from concept to mass production.
             </p>
 
             {/* Key Highlights / Pillars */}
-            <div className="grid grid-cols-3 gap-3 py-2 max-w-lg border-y border-slate-800/80">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 py-2 max-w-lg border-y border-slate-800/80">
               <div className="space-y-0.5">
-                <span className="text-lg sm:text-xl font-bold font-mono text-teal-400">7+</span>
-                <p className="text-xs text-slate-400 leading-tight">Key Industry Projects</p>
+                <span className="text-base sm:text-xl font-bold font-mono text-teal-400">7+</span>
+                <p className="text-[11px] sm:text-xs text-slate-400 leading-tight">Key Industry Projects</p>
               </div>
               <div className="space-y-0.5">
-                <span className="text-lg sm:text-xl font-bold font-mono text-teal-400">Mass Prod.</span>
-                <p className="text-xs text-slate-400 leading-tight">Concept to Factory Floor</p>
+                <span className="text-base sm:text-xl font-bold font-mono text-teal-400">Mass Prod.</span>
+                <p className="text-[11px] sm:text-xs text-slate-400 leading-tight">Concept to Factory Floor</p>
               </div>
               <div className="space-y-0.5">
-                <span className="text-lg sm:text-xl font-bold font-mono text-teal-400">Patents</span>
-                <p className="text-xs text-slate-400 leading-tight">Convertible Technology</p>
+                <span className="text-base sm:text-xl font-bold font-mono text-teal-400">Patents</span>
+                <p className="text-[11px] sm:text-xs text-slate-400 leading-tight">Convertible Tech</p>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
               <button
                 onClick={() => scrollTo('projects')}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-teal-500/10 hover:shadow-teal-500/25 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-teal-500/10 hover:shadow-teal-500/25 hover:-translate-y-0.5"
               >
                 <Wrench className="w-4 h-4" />
                 <span>View Projects</span>
@@ -157,7 +158,7 @@ export const Hero: React.FC = () => {
 
               <button
                 onClick={() => scrollTo('contact')}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm transition-all border border-slate-700 hover:border-slate-600 shadow-sm hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm transition-all border border-slate-700 hover:border-slate-600 shadow-sm hover:-translate-y-0.5"
               >
                 <Mail className="w-4 h-4 text-teal-400" />
                 <span>Contact Me</span>

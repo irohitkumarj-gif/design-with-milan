@@ -243,6 +243,32 @@ export function matchFileNameToSlot(fileName: string): string | null {
   return null;
 }
 
+// Safe Storage Helpers to prevent any iframe or quota exceptions
+export function safeGetStorage(key: string): string | null {
+  try {
+    if (typeof window !== 'undefined' && 'localStorage' in window && window.localStorage) {
+      return window.localStorage.getItem(key);
+    }
+  } catch (_) {}
+  return null;
+}
+
+export function safeSetStorage(key: string, val: string): void {
+  try {
+    if (typeof window !== 'undefined' && 'localStorage' in window && window.localStorage) {
+      window.localStorage.setItem(key, val);
+    }
+  } catch (_) {}
+}
+
+export function safeRemoveStorage(key: string): void {
+  try {
+    if (typeof window !== 'undefined' && 'localStorage' in window && window.localStorage) {
+      window.localStorage.removeItem(key);
+    }
+  } catch (_) {}
+}
+
 // In-memory runtime cache for synchronous instant rendering
 const memoryCache: Map<string, string> = new Map();
 
@@ -253,18 +279,16 @@ if (typeof window !== 'undefined') {
   try {
     Object.keys(IMAGE_SLOT_REGISTRY).forEach((slotId) => {
       const meta = IMAGE_SLOT_REGISTRY[slotId];
-      const local = window.localStorage ? localStorage.getItem(`custom_img_${slotId}`) : null;
+      const local = safeGetStorage(`custom_img_${slotId}`);
       if (local) {
         memoryCache.set(slotId, local);
       } else if (meta?.defaultFallbackUrl) {
         memoryCache.set(slotId, meta.defaultFallbackUrl);
       }
     });
-    if (window.localStorage) {
-      const heroImg = localStorage.getItem('custom_img_milan_profile');
-      if (heroImg) {
-        memoryCache.set('milan-hero-summit', heroImg);
-      }
+    const heroImg = safeGetStorage('custom_img_milan_profile');
+    if (heroImg) {
+      memoryCache.set('milan-hero-summit', heroImg);
     }
   } catch (_) {}
 }
@@ -367,22 +391,22 @@ function openDB(): Promise<IDBDatabase> {
 export async function initializeImageStore(): Promise<Record<string, string>> {
   const loaded: Record<string, string> = {};
 
-  // 1. First read from localStorage (synchronous & instant on reload)
+  // 1. First read from safe storage (synchronous & instant on reload)
   try {
     Object.keys(IMAGE_SLOT_REGISTRY).forEach((slotId) => {
-      const local = localStorage.getItem(`custom_img_${slotId}`);
+      const local = safeGetStorage(`custom_img_${slotId}`);
       if (local) {
         memoryCache.set(slotId, local);
         loaded[slotId] = local;
       }
     });
-    const heroImg = localStorage.getItem('custom_img_milan_profile');
+    const heroImg = safeGetStorage('custom_img_milan_profile');
     if (heroImg && !loaded['milan-hero-summit']) {
       memoryCache.set('milan-hero-summit', heroImg);
       loaded['milan-hero-summit'] = heroImg;
     }
   } catch (e) {
-    console.warn('LocalStorage preload error', e);
+    console.warn('Safe storage preload warning', e);
   }
 
   // 2. Next read from IndexedDB and NOTIFY subscribers for any refreshed data
@@ -400,10 +424,8 @@ export async function initializeImageStore(): Promise<Record<string, string>> {
             memoryCache.set(rec.slotId, rec.dataUrl);
             loaded[rec.slotId] = rec.dataUrl;
 
-            // Ensure localStorage also has it
-            try {
-              localStorage.setItem(`custom_img_${rec.slotId}`, rec.dataUrl);
-            } catch (_) {}
+            // Ensure safe storage also has it
+            safeSetStorage(`custom_img_${rec.slotId}`, rec.dataUrl);
 
             // CRITICAL: Notify UI subscribers so images render immediately after refresh
             notifySubscribers(rec.slotId, rec.dataUrl);
@@ -447,14 +469,10 @@ export async function saveImageSlot(slotId: string, dataUrl: string): Promise<bo
   memoryCache.set(slotId, dataUrl);
   notifySubscribers(slotId, dataUrl);
 
-  // 1. Save to LocalStorage for instant synchronous reloads
-  try {
-    localStorage.setItem(`custom_img_${slotId}`, dataUrl);
-    if (slotId === 'milan-hero-summit') {
-      localStorage.setItem('custom_img_milan_profile', dataUrl);
-    }
-  } catch (e) {
-    console.warn('LocalStorage quota warning (handled by IndexedDB)', e);
+  // 1. Save to safe storage for instant synchronous reloads
+  safeSetStorage(`custom_img_${slotId}`, dataUrl);
+  if (slotId === 'milan-hero-summit') {
+    safeSetStorage('custom_img_milan_profile', dataUrl);
   }
 
   // 2. Save to IndexedDB with guaranteed transaction completion
@@ -484,14 +502,29 @@ export async function saveImageSlot(slotId: string, dataUrl: string): Promise<bo
   return true;
 }
 
+// Normalize asset paths so images work on GitHub Pages subpaths (/repo-name/) as well as root domains
+export function normalizeAssetUrl(url: string | undefined | null): string {
+  if (!url) return '';
+  if (url.startsWith('data:') || url.startsWith('http://') || url.startsWith('https://') || url.startsWith('blob:')) {
+    return url;
+  }
+  const clean = url.replace(/^\/+/, '');
+  const base = import.meta.env.BASE_URL || './';
+  if (base.endsWith('/')) {
+    return `${base}${clean}`;
+  }
+  return `${base}/${clean}`;
+}
+
 // Get image synchronously from memory cache or default fallback URL
 export function getImageSlotSync(slotId: string): string | null {
   if (memoryCache.has(slotId)) {
-    return memoryCache.get(slotId) || null;
+    const cached = memoryCache.get(slotId);
+    return cached ? normalizeAssetUrl(cached) : null;
   }
   const meta = IMAGE_SLOT_REGISTRY[slotId];
   if (meta?.defaultFallbackUrl) {
-    return meta.defaultFallbackUrl;
+    return normalizeAssetUrl(meta.defaultFallbackUrl);
   }
   return null;
 }
@@ -501,13 +534,11 @@ export async function removeImageSlot(slotId: string): Promise<void> {
   memoryCache.delete(slotId);
   notifySubscribers(slotId, null);
 
-  // 1. Remove from LocalStorage
-  try {
-    localStorage.removeItem(`custom_img_${slotId}`);
-    if (slotId === 'milan-hero-summit') {
-      localStorage.removeItem('custom_img_milan_profile');
-    }
-  } catch (_) {}
+  // 1. Remove from safe storage
+  safeRemoveStorage(`custom_img_${slotId}`);
+  if (slotId === 'milan-hero-summit') {
+    safeRemoveStorage('custom_img_milan_profile');
+  }
 
   // 2. Remove from IndexedDB
   try {

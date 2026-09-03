@@ -62,17 +62,17 @@ export const Navbar: React.FC = () => {
         {/* Brand Logo & Tagline */}
         <button
           onClick={() => scrollTo('home')}
-          className="text-left group focus:outline-none"
+          className="text-left group focus:outline-none min-w-0"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-slate-950 font-bold shadow-md group-hover:scale-105 transition-transform">
-              <Compass className="w-5 h-5 text-slate-950" />
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-slate-950 font-bold shadow-md group-hover:scale-105 transition-transform shrink-0">
+              <Compass className="w-4 h-4 sm:w-5 sm:h-5 text-slate-950" />
             </div>
-            <div>
-              <span className="text-lg font-bold tracking-tight text-white block group-hover:text-teal-300 transition-colors font-sans">
+            <div className="truncate">
+              <span className="text-sm sm:text-base md:text-lg font-bold tracking-tight text-white block group-hover:text-teal-300 transition-colors font-sans truncate">
                 Design With Milan
               </span>
-              <span className="text-[11px] text-teal-400 font-medium tracking-wide block -mt-0.5">
+              <span className="text-[10px] sm:text-[11px] text-teal-400 font-medium tracking-wide block -mt-0.5 truncate">
                 Mechanical & Product Design Engineer
               </span>
             </div>
@@ -85,7 +85,7 @@ export const Navbar: React.FC = () => {
             <button
               key={link.id}
               onClick={() => scrollTo(link.id)}
-              className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all ${
+              className={`px-3.5 lg:px-4 py-1.5 text-xs font-medium rounded-full transition-all ${
                 activeSection === link.id
                   ? 'bg-teal-500/20 text-teal-300 border border-teal-500/40 shadow-sm'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
@@ -108,16 +108,16 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <div className="md:hidden flex items-center gap-2">
+        <div className="md:hidden flex items-center gap-1.5 sm:gap-2 shrink-0">
           <button
             onClick={() => scrollTo('contact')}
-            className="px-3 py-1.5 rounded-full bg-teal-500 text-slate-950 font-semibold text-xs"
+            className="px-2.5 sm:px-3 py-1.5 rounded-full bg-teal-500 text-slate-950 font-semibold text-xs min-h-[36px]"
           >
             Talk
           </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white"
+            className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white min-w-[40px] min-h-[40px] flex items-center justify-center"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

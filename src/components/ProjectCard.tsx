@@ -37,37 +37,37 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       className="bg-slate-900/90 border border-slate-800 hover:border-slate-700/80 rounded-2xl overflow-hidden transition-all duration-300 shadow-xl"
     >
       {/* Card Header */}
-      <div className="p-6 sm:p-7 border-b border-slate-800/80 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-850">
-        <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="p-4 sm:p-6 md:p-7 border-b border-slate-800/80 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-850">
+        <div className="flex flex-wrap items-start justify-between gap-3 sm:gap-4">
           <div className="space-y-1.5 max-w-2xl">
-            <div className="flex flex-wrap items-center gap-2 text-xs">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
               {/* Organization badge */}
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700 font-medium text-slate-200">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700 font-medium text-slate-200 text-[11px] sm:text-xs">
                 <Building2 className="w-3.5 h-3.5 text-teal-400" />
                 {project.organization}
               </span>
 
               {/* Status badge */}
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-teal-500/10 border border-teal-500/30 text-teal-300 font-mono font-medium">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-teal-500/10 border border-teal-500/30 text-teal-300 font-mono font-medium text-[11px] sm:text-xs">
                 <Calendar className="w-3.5 h-3.5" />
                 {project.status}
               </span>
 
               {/* Metric or highlight */}
               {project.featuredMetric && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-300 font-medium text-[11px]">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-300 font-medium text-[10px] sm:text-[11px]">
                   <Award className="w-3.5 h-3.5 text-amber-400" />
                   {project.featuredMetric}
                 </span>
               )}
             </div>
 
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-100 font-sans tracking-tight pt-1">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-100 font-sans tracking-tight pt-1">
               {project.title}
             </h3>
 
             {project.subtitle && (
-              <p className="text-sm text-slate-400 leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-sans">
                 {project.subtitle}
               </p>
             )}
@@ -80,7 +80,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 border border-teal-500/30 transition-colors"
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-lg bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 border border-teal-500/30 transition-colors"
               >
                 <span>Reference</span>
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -89,7 +89,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors border border-slate-700"
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors border border-slate-700 min-w-[32px] min-h-[32px] flex items-center justify-center"
               aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
             >
               {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -99,7 +99,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
 
       {/* Main Content Body */}
-      <div className="p-6 sm:p-7 space-y-7">
+      <div className="p-4 sm:p-6 md:p-7 space-y-6 sm:space-y-7">
         {/* Visual Gallery Layout */}
         <div className="space-y-3">
           {/* Main Visual Frame */}

@@ -74,20 +74,20 @@ export const About: React.FC = () => {
               </h3>
 
               <div className="space-y-3.5 text-xs text-slate-300">
-                <div className="flex items-start gap-3 pb-3 border-b border-slate-800">
-                  <span className="font-mono text-teal-400 font-semibold w-24 shrink-0">Focus</span>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-3 pb-3 border-b border-slate-800">
+                  <span className="font-mono text-teal-400 font-semibold w-auto sm:w-24 shrink-0">Focus</span>
                   <span>Consumer appliances, commercial cleantech, robotic mechanisms, refrigeration systems</span>
                 </div>
-                <div className="flex items-start gap-3 pb-3 border-b border-slate-800">
-                  <span className="font-mono text-teal-400 font-semibold w-24 shrink-0">CAD Expertise</span>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-3 pb-3 border-b border-slate-800">
+                  <span className="font-mono text-teal-400 font-semibold w-auto sm:w-24 shrink-0">CAD Expertise</span>
                   <span>Solidworks, Unigraphics NX (NX7.5), Solidworks Simulation FEA, PDM</span>
                 </div>
-                <div className="flex items-start gap-3 pb-3 border-b border-slate-800">
-                  <span className="font-mono text-teal-400 font-semibold w-24 shrink-0">Industry Proven</span>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-3 pb-3 border-b border-slate-800">
+                  <span className="font-mono text-teal-400 font-semibold w-auto sm:w-24 shrink-0">Industry Proven</span>
                   <span>Food Cycle Science (FC-75), Panasonic India, Miraj Group, LG Electronics</span>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="font-mono text-teal-400 font-semibold w-24 shrink-0">Education</span>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-3">
+                  <span className="font-mono text-teal-400 font-semibold w-auto sm:w-24 shrink-0">Education</span>
                   <span>Fanshawe College (PEM & AMD Capstone Mechanical Engineering Programs)</span>
                 </div>
               </div>

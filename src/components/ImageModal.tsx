@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { ProjectImage } from '../types';
 import { TechnicalSchematic } from './TechnicalSchematic';
 import { X, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { getImageSlotSync, normalizeAssetUrl } from '../utils/imageStore';
 
 interface ImageModalProps {
   image: ProjectImage | null;
@@ -29,13 +30,7 @@ export const ImageModal: React.FC<ImageModalProps> = ({ image, onClose }) => {
   const handleReset = () => setZoom(1);
 
   // Check if custom image was uploaded
-  const customSrc = (() => {
-    try {
-      return localStorage.getItem(`custom_img_${image.id}`) || image.url;
-    } catch {
-      return image.url;
-    }
-  })();
+  const customSrc = normalizeAssetUrl(getImageSlotSync(image.id) || image.url);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4 sm:p-6 animate-fadeIn">

@@ -8,7 +8,8 @@ import {
   removeImageSlot,
   subscribeToImageUpdates,
   IMAGE_SLOT_REGISTRY,
-  processAndSaveFile
+  processAndSaveFile,
+  normalizeAssetUrl
 } from '../utils/imageStore';
 
 interface ProjectImageDisplayProps {
@@ -101,7 +102,7 @@ export const ProjectImageDisplay: React.FC<ProjectImageDisplayProps> = ({
     setImgError(false);
   };
 
-  const activeSrc = customSrc || slotMeta?.defaultFallbackUrl || image.url;
+  const activeSrc = normalizeAssetUrl(customSrc || slotMeta?.defaultFallbackUrl || image.url);
   const isRealPhotoActive = !!activeSrc && !imgError;
 
   return (
@@ -183,14 +184,14 @@ export const ProjectImageDisplay: React.FC<ProjectImageDisplayProps> = ({
       </div>
 
       {/* Media display viewport */}
-      <div className="w-full h-full min-h-[280px] flex items-center justify-center bg-slate-950 relative">
+      <div className="w-full h-full min-h-[220px] sm:min-h-[280px] md:min-h-[340px] flex items-center justify-center bg-slate-950 relative">
         {isRealPhotoActive ? (
           <img
             src={activeSrc}
             alt={image.alt}
             onLoad={() => setImgError(false)}
             onError={() => setImgError(true)}
-            className="w-full h-full object-contain max-h-[380px] transition-transform duration-300 group-hover:scale-[1.01]"
+            className="w-full h-full object-contain max-h-[320px] sm:max-h-[380px] transition-transform duration-300 group-hover:scale-[1.01]"
             loading="lazy"
           />
         ) : (
